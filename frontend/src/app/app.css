@@ -1,0 +1,8 @@
+main { max-width: 480px; margin: 40px auto; font-family: system-ui, sans-serif; padding: 0 16px; }
+form { display: flex; gap: 8px; }
+input:not([type]) { flex: 1; padding: 8px; }
+ul { list-style: none; padding: 0; }
+li { display: flex; align-items: center; gap: 8px; padding: 8px; border-bottom: 1px solid #ddd; }
+li span { flex: 1; }
+li.feita span { text-decoration: line-through; color: #888; }
+small { color: #666; }

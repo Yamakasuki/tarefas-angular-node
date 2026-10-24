@@ -1,0 +1,28 @@
+<main>
+  <h1>Minhas tarefas</h1>
+
+  <!-- (ngSubmit) é event binding; [formControl] liga o input ao FormControl do componente -->
+  <form (ngSubmit)="adicionar()">
+    <input [formControl]="titulo" placeholder="Nova tarefa" />
+    <button type="submit" [disabled]="titulo.invalid">Adicionar</button>
+  </form>
+
+  <!-- async pipe: se inscreve no Observable e cancela a inscrição sozinho quando o componente morre -->
+  @if (tarefas$ | async; as tarefas) {
+    <ul>
+      <!-- @for (estrutural): cria um <li> por tarefa; track ajuda o Angular a reaproveitar elementos -->
+      @for (t of tarefas; track t.id) {
+        <li appDestaque [class.feita]="t.concluida">
+          <input type="checkbox" [checked]="t.concluida" (change)="alternar(t.id)" />
+          <span>{{ t.titulo }}</span>
+          <small>{{ t.concluida | status }}</small>
+          <button (click)="remover(t.id)">Excluir</button>
+        </li>
+      } @empty {
+        <li>Nenhuma tarefa ainda.</li>
+      }
+    </ul>
+  } @else {
+    <p>Carregando...</p>
+  }
+</main>
