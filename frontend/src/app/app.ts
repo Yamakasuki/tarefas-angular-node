@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BehaviorSubject, switchMap } from 'rxjs';
 import { TarefaService } from './tarefa.service';
 import { StatusPipe } from './status.pipe';
@@ -19,16 +19,19 @@ export class App {
   private service = inject(TarefaService);
 
   // Reactive Forms: o campo e a validação ficam no TypeScript, não no HTML.
-  titulo = new FormControl('', { nonNullable: true, validators: [Validators.required] });
+  // O FormGroup ligado ao <form> é o que faz o (ngSubmit) funcionar sem recarregar a página.
+  form = new FormGroup({
+    titulo: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+  });
 
   // Cada next() pede a lista de novo. switchMap cancela a requisição anterior se outra chegar.
   private recarregar$ = new BehaviorSubject<void>(undefined);
   tarefas$ = this.recarregar$.pipe(switchMap(() => this.service.listar()));
 
   adicionar() {
-    if (this.titulo.invalid) return;
-    this.service.criar(this.titulo.value).subscribe(() => {
-      this.titulo.reset();
+    if (this.form.invalid) return;
+    this.service.criar(this.form.getRawValue().titulo).subscribe(() => {
+      this.form.reset();
       this.recarregar$.next();
     });
   }

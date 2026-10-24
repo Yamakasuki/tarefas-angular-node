@@ -1,10 +1,10 @@
 <main>
   <h1>Minhas tarefas</h1>
 
-  <!-- (ngSubmit) é event binding; [formControl] liga o input ao FormControl do componente -->
-  <form (ngSubmit)="adicionar()">
-    <input [formControl]="titulo" placeholder="Nova tarefa" />
-    <button type="submit" [disabled]="titulo.invalid">Adicionar</button>
+  <!-- [formGroup] liga o form ao FormGroup; (ngSubmit) é event binding; formControlName liga o campo -->
+  <form [formGroup]="form" (ngSubmit)="adicionar()">
+    <input formControlName="titulo" placeholder="Nova tarefa" />
+    <button type="submit" [disabled]="form.invalid">Adicionar</button>
   </form>
 
   <!-- async pipe: se inscreve no Observable e cancela a inscrição sozinho quando o componente morre -->
